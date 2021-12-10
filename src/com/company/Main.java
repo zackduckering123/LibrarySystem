@@ -10,39 +10,34 @@ import java.util.ArrayList;
 public class Main {
     private static ArrayList<String> bookList = new ArrayList<>();
     private static File bookShelf = new File("Library.txt");
+    private static File userDetails = new File("logInDetails.txt");
 
     public static void main(String[] args) {
-        boolean choice = true; //main menu, where you can choose weather your entering a book ext
-        while (choice) {
-            String Menu = getInput("Would you like to:" + "\nEnter a book" + "\nSearch for a book"+ "\nExit");
-            if (Menu.equalsIgnoreCase("enter a book")) {
-                add();
-            }
-            if (Menu.equalsIgnoreCase("Exit")) {
-                CreateFile();
-                WriteToFile(); //call write to file method
-                choice = false;
-            }
-            else {
-                System.out.println("Sorry, this is not an option");
-            }
-        }
-        System.out.println(bookList);
-    }
+    boolean login = true;
+    String adminUsername = "MargaretGesner@gmail.com";
+    String adminPassword = "MikeWazowski123";
+        String choice = "";
+        while (login){
+            choice = getInput("Would you like to:" + "\nLog in as admin" + "Create an account" + "Log into an existing account");
+            if (choice.equalsIgnoreCase("")){     //chose weather to log in ore create an account
 
+            }
+    }
+    }
     public static String BookDetails() { //details of book
         String bookDetails = "";
-        while(bookDetails.equals("")) {
+        while (bookDetails.equals("")) {
             try {
                 String bookTitle = getInput("Enter the title of the book");
                 String AuthorName = getInput("Enter the name of the author");
                 String Genre = getInput("Enter the genre of book");
                 int ISBN = Integer.parseInt(getInput("Enter the ISBN"));
-                bookDetails = bookTitle + ", " + AuthorName + ", " + Genre + ", " + ISBN;
+                bookDetails = bookTitle + "- " + AuthorName + "- " + Genre + "- " + ISBN + ". " + "\n";
             } catch (Exception e) {
                 System.out.println(e);
                 System.out.println("There has been an error, please re-enter the book details");
             }
+
         }
 
         return bookDetails;
@@ -60,7 +55,8 @@ public class Main {
             bookList.add(BookDetails());
         }
     }
-    public static void CreateFile() {
+
+    public static void CreateBooksFile() {
         try {
             if (bookShelf.createNewFile()) {
                 System.out.println("File created: " + bookShelf.getName());
@@ -75,7 +71,7 @@ public class Main {
 
     public static void WriteToFile() {
         try {
-            FileWriter myWriter = new FileWriter(bookShelf.getName(), false); //True means append to file contents, False means overwrite
+            FileWriter myWriter = new FileWriter(bookShelf.getName(), true); //True means append to file contents, False means overwrite
             for (int i = 0; i < bookList.size(); i++) {
                 myWriter.write(bookList.get(i));
             }
@@ -87,4 +83,77 @@ public class Main {
         }
     }
 
+    public static void CreateUserFile() {
+        try {
+            if (userDetails.createNewFile()) {
+                System.out.println("File created: " + userDetails.getName());
+            } else {
+                System.out.println("File already exist. ");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void WriteToUserFile() {
+        try {
+            FileWriter myWriter = new FileWriter(userDetails.getName(), true); //True means append to file contents, False means overwrite
+            myWriter.write(userDetailsArray());
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    public static String userDetailsArray() {
+        String nameAndPassword = "";
+        String password = "";
+        while (nameAndPassword.equals("")) {
+            try {
+                String userName = getInput("Enter your email address");
+                boolean passwordlength = true;
+                while (passwordlength) {
+                    password = getInput("Enter your password. Please remember a password must be at lease 6 characters long");
+                    if (password.length() < 6) {
+                        System.out.println("Your password is not secure, please enter a new password"); //checks password length, if it's less than 6 characters it's not secure
+                    } else {
+                        break;
+                    }
+                }
+                nameAndPassword = userName + "- " + password + "\n";
+                }catch(Exception e){
+                    System.out.println(e);
+                    System.out.println("There has been an error, please re-enter your username and password");
+                }
+
+            }
+            return nameAndPassword;
+
+        }
+
+
+
+public static void mainMenuAdmin(){ //admin can add remove and search books
+        boolean choice = true; //main menu, where you can choose weather your entering a book ext
+        while (choice) {
+            String Menu = getInput("Would you like to:" + "\nEnter a book" + "\nSearch for a book" + "\nExit");
+            if (Menu.equalsIgnoreCase("enter a book")) {
+                add();
+            }
+            if (Menu.equalsIgnoreCase("Exit")) {
+                CreateBooksFile();
+                WriteToFile(); //call write to file method
+                choice = false;
+            } else {
+                System.out.println("Sorry, this is not an option");
+            }
+        }
+        System.out.println(bookList);
+    }
+    public static void mainMenuGuest(){    //guest can search
+
+    }
 }
