@@ -14,15 +14,29 @@ public class Main {
 
     public static void main(String[] args) {
     boolean login = true;
-    String adminUsername = "MargaretGesner@gmail.com";
-    String adminPassword = "MikeWazowski123";
         String choice = "";
         while (login){
-            choice = getInput("Would you like to:" + "\nLog in as admin" + "Create an account" + "Log into an existing account");
-            if (choice.equalsIgnoreCase("")){     //chose weather to log in ore create an account
+            choice = getInput("Would you like to:" + "\nLog in as admin" + "\nCreate an account" + "\nLog into an existing account" + "\nExit"); //chose weather to log in ore create an account
+            if (choice.equalsIgnoreCase("log in as admin")){
+                if (AdminCheck() == 1){
+                    mainMenuAdmin();
+                    break;
+                }
+                else {
+                    System.out.println("You do not have admin permissions, please select another option" + "\n");
+                    login = true;
+                }
+            } else if (choice.equalsIgnoreCase("Create an account")){
+                CreateUserFile();
+                WriteToUserFile();
+            } else if (choice.equalsIgnoreCase("log into an existing account")){
 
+            }else if (choice.equalsIgnoreCase("Exit")){
+                break;
+            }else {
+                System.out.println("Sorry this is not an option, please select one that is available");
             }
-    }
+        }
     }
     public static String BookDetails() { //details of book
         String bookDetails = "";
@@ -101,7 +115,7 @@ public class Main {
             FileWriter myWriter = new FileWriter(userDetails.getName(), true); //True means append to file contents, False means overwrite
             myWriter.write(userDetailsArray());
             myWriter.close();
-            System.out.println("Successfully wrote to the file.");
+            System.out.println("Account created successfully");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -116,7 +130,7 @@ public class Main {
                 String userName = getInput("Enter your email address");
                 boolean passwordlength = true;
                 while (passwordlength) {
-                    password = getInput("Enter your password. Please remember a password must be at lease 6 characters long");
+                    password = getInput("Enter your password. Please remember a password must be at least 6 characters long");
                     if (password.length() < 6) {
                         System.out.println("Your password is not secure, please enter a new password"); //checks password length, if it's less than 6 characters it's not secure
                     } else {
@@ -155,5 +169,20 @@ public static void mainMenuAdmin(){ //admin can add remove and search books
     }
     public static void mainMenuGuest(){    //guest can search
 
+    }
+    public static int AdminCheck() {
+        int resolution = 0;
+        String usernameinput = getInput("Please enter the admin username");
+        if (usernameinput.equalsIgnoreCase("Margaret Gesner")) {
+            String passwordinput = getInput("Please enter the admin password");
+            if (passwordinput.equals("MikeWazowski")){
+                resolution = 1;
+            }else {
+                System.out.println("This is the incorrect password!");
+            }
+        } else {
+            System.out.println("this is the incorrect username");
+        }
+        return resolution;
     }
 }
