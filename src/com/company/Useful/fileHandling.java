@@ -1,25 +1,24 @@
 package com.company.Useful;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import com.company.Objects.Book;
+import com.company.Objects.Borrower;
 
 public class fileHandling {
 
     public static Book BookDetails() { //details of book
-        Book bookDetails = new Book("" ,"","","");
-            try {
-                String bookTitle = repository.getInput("Enter the title of the book");
-                String AuthorName = repository.getInput("Enter the name of the author");
-                String Genre = repository.getInput("Enter the genre of book");
-                String ISBN = repository.getInput("Enter the ISBN");
-                bookDetails = new Book(bookTitle ,AuthorName,Genre,ISBN);
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("There has been an error, please re-enter the book details");
-            }
-            return bookDetails;
+        Book bookDetails = new Book("", "", "", "");
+        try {
+            String bookTitle = repository.getInput("Enter the title of the book");
+            String AuthorName = repository.getInput("Enter the name of the author");
+            String Genre = repository.getInput("Enter the genre of book");
+            String ISBN = repository.getInput("Enter the ISBN");
+            bookDetails = new Book(bookTitle, AuthorName, Genre, ISBN);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("There has been an error, please re-enter the book details");
+        }
+        return bookDetails;
     }
 
     public static void add() { //adds to the book list
@@ -72,7 +71,9 @@ public class fileHandling {
     public static void WriteToUserFile() {
         try {
             FileWriter myWriter = new FileWriter(repository.userDetails.getName(), true); //True means append to file contents, False means overwrite
-            myWriter.write(userDetailsArray());
+            for (int i = 0; i < repository.UserDetailsList.size(); i++) {
+                myWriter.write(repository.UserDetailsList.get(i).toString());
+            }
             myWriter.close();
             System.out.println("Account created successfully");
         } catch (IOException e) {
@@ -81,13 +82,13 @@ public class fileHandling {
         }
     }
 
-    public static String userDetailsArray() {
-        String nameAndPassword = "";
-        String password = "";
-        while (nameAndPassword.equals("")) {
+    public static Borrower UserDetails() {
+        Borrower NameAndPassword = new Borrower("", "");
+        while (NameAndPassword.equals("")) {
             try {
                 String userName = repository.getInput("Enter your email address");
                 boolean passwordlength = true;
+                String password = "";
                 while (passwordlength) {
                     password = repository.getInput("Enter your password. Please remember a password must be at least 6 characters long");
                     if (password.length() < 6) {
@@ -96,14 +97,21 @@ public class fileHandling {
                         break;
                     }
                 }
-                nameAndPassword = userName + "- " + password + "\n";
-            }catch(Exception e){
+                NameAndPassword = new Borrower(userName, password);
+            } catch (Exception e) {
                 System.out.println(e);
                 System.out.println("There has been an error, please re-enter your username and password");
             }
 
         }
-        return nameAndPassword;
+        return NameAndPassword;
 
+    }
+
+    public static void AddUser() {
+        int AmountAdding = Integer.parseInt(repository.getInput("How many users would you like to add"));
+        for (int i = 0; i < AmountAdding; i++) {
+            repository.UserDetailsList.add(UserDetails());
+        }
     }
 }

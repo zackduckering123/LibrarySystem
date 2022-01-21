@@ -1,12 +1,13 @@
 package com.company.Useful;
 import com.company.Objects.Book;
-
+import com.company.Objects.Borrower;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class repository {
 
     public static ArrayList<Book> bookList = new ArrayList<>();
+    public static ArrayList<Borrower> UserDetailsList = new ArrayList<>();
     public static File bookShelf = new File("Library.txt");
     public static File userDetails = new File("logInDetails.txt");
 

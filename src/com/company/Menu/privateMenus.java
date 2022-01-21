@@ -10,9 +10,7 @@ public class privateMenus {
         while (choice) {
             String Menu = repository.getInput("Would you like to:" + "\nEnter a book" + "\nSearch for a book" + "\nExit");
             if (Menu.equalsIgnoreCase("enter a book")) {
-
-
-               // fileHandling.add();
+               fileHandling.add();
             }
             if (Menu.equalsIgnoreCase("Exit")) {
                 fileHandling.CreateBooksFile();
